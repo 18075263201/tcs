@@ -1,0 +1,15 @@
+{
+  "name": "snake-game",
+  "version": "1.0.0",
+  "description": "一个带有用户系统和排行榜的贪吃蛇游戏",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000"
+  },
+  "keywords": ["snake", "game", "javascript"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}

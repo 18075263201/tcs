@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贪吃蛇游戏</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 登录页面 -->
+    <div id="loginPage" class="container auth-page">
+        <h1>贪吃蛇游戏</h1>
+        <div class="auth-form">
+            <h2>登录</h2>
+            <div class="form-group">
+                <label for="loginUsername">用户名</label>
+                <input type="text" id="loginUsername" placeholder="请输入用户名">
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">密码</label>
+                <input type="password" id="loginPassword" placeholder="请输入密码">
+            </div>
+            <div class="form-actions">
+                <button id="loginBtn" class="btn">登录</button>
+                <button id="goToRegisterBtn" class="btn btn-secondary">注册</button>
+            </div>
+            <div id="loginMessage" class="message"></div>
+        </div>
+    </div>
+
+    <!-- 注册页面 -->
+    <div id="registerPage" class="container auth-page" style="display: none;">
+        <h1>贪吃蛇游戏</h1>
+        <div class="auth-form">
+            <h2>注册</h2>
+            <div class="form-group">
+                <label for="registerUsername">用户名</label>
+                <input type="text" id="registerUsername" placeholder="请输入用户名">
+            </div>
+            <div class="form-group">
+                <label for="registerPassword">密码</label>
+                <input type="password" id="registerPassword" placeholder="请输入密码">
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">确认密码</label>
+                <input type="password" id="confirmPassword" placeholder="请再次输入密码">
+            </div>
+            <div class="form-actions">
+                <button id="registerBtn" class="btn">注册</button>
+                <button id="goToLoginBtn" class="btn btn-secondary">返回登录</button>
+            </div>
+            <div id="registerMessage" class="message"></div>
+        </div>
+    </div>
+
+    <!-- 游戏主页面 -->
+    <div id="gamePage" class="container" style="display: none;">
+        <div class="user-info">
+            <div id="userAvatar" class="user-avatar">
+                <span id="avatarLetter"></span>
+            </div>
+            <div class="user-details">
+                <div id="username" class="username"></div>
+                <div class="high-score">最高得分: <span id="userHighScore">0</span></div>
+            </div>
+            <button id="logoutBtn" class="btn btn-small">退出</button>
+        </div>
+        <h1>贪吃蛇游戏</h1>
+        <div class="game-info">
+            <div class="score">得分: <span id="score">0</span></div>
+            <div class="level">等级: <span id="level">1</span></div>
+        </div>
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        <div class="controls">
+            <button id="startBtn" class="btn">开始游戏</button>
+            <button id="pauseBtn" class="btn">暂停游戏</button>
+            <button id="restartBtn" class="btn">重新开始</button>
+            <button id="showLeaderboardBtn" class="btn btn-secondary">查看排行榜</button>
+        </div>
+        <div class="instructions">
+            <p>使用方向键或WASD键控制蛇的移动方向</p>
+        </div>
+    </div>
+
+    <!-- 排行榜页面 -->
+    <div id="leaderboardPage" class="container" style="display: none;">
+        <h1>贪吃蛇游戏</h1>
+        <h2>排行榜</h2>
+        <div class="leaderboard">
+            <div class="leaderboard-header">
+                <div class="rank-col">排名</div>
+                <div class="user-col">用户</div>
+                <div class="score-col">得分</div>
+            </div>
+            <div id="leaderboardList" class="leaderboard-list">
+                <!-- 排行榜数据将通过JavaScript动态添加 -->
+            </div>
+        </div>
+        <div class="controls">
+            <button id="backToGameBtn" class="btn">返回游戏</button>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        // 初始化用户数据
+        auth.initUserData();
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
