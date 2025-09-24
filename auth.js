@@ -147,6 +147,83 @@ function getAvatar(username) {
     };
 }
 
+// 导出数据（用于跨设备同步）
+function exportUserData() {
+    const users = JSON.parse(localStorage.getItem('snakeGameUsers'));
+    const leaderboard = JSON.parse(localStorage.getItem('snakeGameLeaderboard'));
+    const currentUser = localStorage.getItem('currentUser');
+    
+    const data = {
+        users,
+        leaderboard,
+        version: '1.0',
+        exportDate: new Date().toISOString()
+    };
+    
+    // 创建数据URL并提供下载
+    const dataStr = JSON.stringify(data);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `snake-game-data-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    
+    // 清理
+    setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }, 100);
+}
+
+// 导入数据（用于跨设备同步）
+function importUserData(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        
+        reader.onload = (event) => {
+            try {
+                const data = JSON.parse(event.target.result);
+                
+                // 验证数据格式
+                if (!data.users || !Array.isArray(data.users) || !data.leaderboard || !Array.isArray(data.leaderboard)) {
+                    throw new Error('无效的数据格式');
+                }
+                
+                // 保存数据到localStorage
+                localStorage.setItem('snakeGameUsers', JSON.stringify(data.users));
+                localStorage.setItem('snakeGameLeaderboard', JSON.stringify(data.leaderboard));
+                
+                // 如果有当前用户信息，尝试恢复登录状态
+                const currentUser = getCurrentUser();
+                if (currentUser) {
+                    const importedUser = data.users.find(u => u.id === currentUser.id);
+                    if (importedUser) {
+                        localStorage.setItem('currentUser', JSON.stringify({
+                            id: importedUser.id,
+                            username: importedUser.username,
+                            avatar: importedUser.avatar,
+                            highScore: importedUser.highScore
+                        }));
+                    }
+                }
+                
+                resolve({ success: true, message: '数据导入成功' });
+            } catch (error) {
+                reject({ success: false, message: '数据导入失败: ' + error.message });
+            }
+        };
+        
+        reader.onerror = () => {
+            reject({ success: false, message: '文件读取失败' });
+        };
+        
+        reader.readAsText(file);
+    });
+}
+
 // 导出功能
 window.auth = {
     initUserData,
@@ -156,5 +233,7 @@ window.auth = {
     logoutUser,
     updateUserHighScore,
     getLeaderboard,
-    getAvatar
+    getAvatar,
+    exportUserData,
+    importUserData
 };
